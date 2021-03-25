@@ -1,0 +1,7 @@
+<div *ngIf="privateUser">
+  <h1>Private data: </h1>
+  <p *ngFor="let data of privateUser">
+    <span>Login <strong>{{data.login}}</strong></span><br />
+    <span>Password <strong>{{data.password}}</strong></span><br />
+  </p>
+</div>

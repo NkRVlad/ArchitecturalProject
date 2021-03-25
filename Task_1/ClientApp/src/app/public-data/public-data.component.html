@@ -1,0 +1,8 @@
+<div *ngIf="privateProduct">
+  <h1>Public data: </h1>
+  <p *ngFor="let data of privateProduct">
+    <span>Name <strong>{{data.name}}</strong></span><br />
+    <span>Count <strong>{{data.count}}</strong></span><br />
+    <span>Price <strong>{{data.price}}</strong></span><br />
+  </p>
+</div>
