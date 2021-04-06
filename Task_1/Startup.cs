@@ -14,6 +14,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using BusinessLogicLayer.ProductService;
 using BusinessLogicLayer.FilterService;
+using System.Linq;
+using DataAccessLayer.Entities;
 
 namespace Task_1
 {
@@ -38,7 +40,7 @@ namespace Task_1
                     migrations => migrations.MigrationsAssembly("DataAccessLayer")
                 );
             });
-
+            
             services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -56,10 +58,12 @@ namespace Task_1
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_Settings.EnvironmentSettings.SecretKey))
                 };
             });
+
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(typeof(ApiRequestFilter));
             });
+
             services.AddControllersWithViews();
             
             services.AddSpaStaticFiles(configuration =>
@@ -69,6 +73,7 @@ namespace Task_1
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ApiRequestFilter>();
         }
 
       
@@ -91,7 +96,7 @@ namespace Task_1
             {
                 app.UseSpaStaticFiles();
             }
-
+            SeedDefaultData(app);
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -115,6 +120,74 @@ namespace Task_1
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+        }
+
+        private void SeedDefaultData(IApplicationBuilder app)
+        {
+            var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+
+            using (var scope = scopeFactory.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+                if (dbContext.Users.FirstOrDefault(u => u.Login == "Vlad") == null)
+                {
+                    User vlad = new User
+                    {
+                        Login = "Vlad",
+                        Password = "123456"
+                    };
+
+                    User oleg = new User
+                    {
+                        Login = "Oleg",
+                        Password = "123456"
+                    };
+
+                    dbContext.Users.Add(vlad);
+                    dbContext.Users.Add(oleg);
+
+                    dbContext.SaveChanges();
+                }
+
+                if (dbContext.Products.FirstOrDefault(u => u.Name == "Tomato") == null)
+                {
+                    Product tomato = new Product
+                    {
+                        Name = "Tomato",
+                        Count = 124,
+                        Price = 23.4
+                    };
+
+                    Product potato = new Product
+                    {
+                        Name = "Potato",
+                        Count = 611,
+                        Price = 123
+                    };
+
+                    Product carrot = new Product
+                    {
+                        Name = "Carrot",
+                        Count = 447,
+                        Price = 12
+                    };
+
+                    Product bow = new Product
+                    {
+                        Name = "Bow",
+                        Count = 63,
+                        Price = 25
+                    };
+
+                    dbContext.Products.Add(tomato);
+                    dbContext.Products.Add(potato);
+                    dbContext.Products.Add(carrot);
+                    dbContext.Products.Add(bow);
+
+                    dbContext.SaveChanges();
+                }
+            }
         }
     }
 }
