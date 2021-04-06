@@ -1,4 +1,5 @@
-﻿using BusinessLogicLayer.Models;
+﻿using BusinessLogicLayer.FilterService;
+using BusinessLogicLayer.Models;
 using BusinessLogicLayer.UserService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +25,7 @@ namespace Task_1.Controllers
         [HttpGet]
         [Route("get-user")]
         [Authorize]
+        [ServiceFilter(typeof(ApiRequestFilter))]
         public IEnumerable<User> GetUsers()
         {
             return _userService.GetAll();

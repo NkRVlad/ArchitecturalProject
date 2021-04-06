@@ -10,5 +10,8 @@ namespace DataAccessLayer
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ApiRequestsLogs> ApiRequestsLogs { get; set; }
+        public int SaveChanges();
+
     }
 }

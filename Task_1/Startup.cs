@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using BusinessLogicLayer.ProductService;
+using BusinessLogicLayer.FilterService;
 
 namespace Task_1
 {
@@ -55,7 +56,10 @@ namespace Task_1
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_Settings.EnvironmentSettings.SecretKey))
                 };
             });
-
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(typeof(ApiRequestFilter));
+            });
             services.AddControllersWithViews();
             
             services.AddSpaStaticFiles(configuration =>
