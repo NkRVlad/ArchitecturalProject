@@ -3,7 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 namespace DataAccessLayer
 {
     public interface IApplicationDbContext
@@ -11,6 +14,9 @@ namespace DataAccessLayer
         public DbSet<User> Users { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ApiRequestsLogs> ApiRequestsLogs { get; set; }
+        public DbSet<Employees> Employees { get; set; }
+        public DbSet<HiringHistories> HiringHistories { get; set; }
+        public DbSet<Achievements> Achievements { get; set; }
         public int SaveChanges();
 
     }

@@ -13,6 +13,7 @@ import { LoginComponent } from './login/login.component';
 import { PrivateDataComponent } from './private-data/private-data.component';
 import { PublicDataComponent } from './public-data/public-data.component';
 import { JwtInterceptor } from './jwt-interceptor';
+import { ResultTimeComponent } from './result-time/result-time.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { JwtInterceptor } from './jwt-interceptor';
     FetchDataComponent,
     LoginComponent,
     PrivateDataComponent,
-    PublicDataComponent
+    PublicDataComponent,
+    ResultTimeComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -35,7 +37,8 @@ import { JwtInterceptor } from './jwt-interceptor';
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'login', component: LoginComponent },
       { path: 'privatedata', component: PrivateDataComponent },
-      { path: 'publicdata', component: PublicDataComponent }
+      { path: 'publicdata', component: PublicDataComponent },
+      { path: 'data-provider', component: ResultTimeComponent }
     ])
   ],
   providers: [{

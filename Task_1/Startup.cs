@@ -16,6 +16,8 @@ using BusinessLogicLayer.ProductService;
 using BusinessLogicLayer.FilterService;
 using System.Linq;
 using DataAccessLayer.Entities;
+using System;
+using BusinessLogicLayer.DataProviderService;
 
 namespace Task_1
 {
@@ -74,6 +76,7 @@ namespace Task_1
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ApiRequestFilter>();
+            services.AddScoped<IDataProviderProfilerService, DataProviderProfilerService>();
         }
 
       
@@ -184,7 +187,37 @@ namespace Task_1
                     dbContext.Products.Add(potato);
                     dbContext.Products.Add(carrot);
                     dbContext.Products.Add(bow);
+                    dbContext.SaveChanges();
+                }
 
+                if (dbContext.Employees.Count() == 0)
+                {
+                    for (int i = 0; i < 5000; i++)
+                    {
+                        dbContext.Employees.Add(new Employees { Name = Guid.NewGuid().ToString(), Surname = Guid.NewGuid().ToString() });
+                    }
+                    dbContext.SaveChanges();
+
+                    var tempEmployees = dbContext.Employees.ToList();
+
+                    for (int i = 0; i < 2; i++)
+                    {
+                        foreach (var temp in tempEmployees)
+                        {
+                            dbContext.HiringHistories.Add(new HiringHistories { Name = Guid.NewGuid().ToString(), EmployeesId = temp.Id });
+                        }
+                    }
+                    dbContext.SaveChanges();
+
+                    var tempHiringHistories = dbContext.HiringHistories.ToList();
+
+                    for (int i = 0; i < 2; i++)
+                    {
+                        foreach (var temp in tempHiringHistories)
+                        {
+                            dbContext.Achievements.Add(new Achievements { Description = Guid.NewGuid().ToString(), HiringHistoriesId = temp.Id });
+                        }
+                    }
                     dbContext.SaveChanges();
                 }
             }
